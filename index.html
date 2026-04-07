@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScienceWorld Run Visualizer</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="topbar">
+      <div>
+        <h1>ScienceWorld Run Visualizer</h1>
+        <p>Load a JSON log from the LM Studio agent and inspect the run step by step.</p>
+      </div>
+      <label class="file-picker">
+        <input id="logFile" type="file" accept=".json,application/json">
+        <span>Open Log</span>
+      </label>
+    </section>
+
+    <section class="summary" id="summary">
+      <div class="metric">
+        <span class="label">Task</span>
+        <strong id="taskName">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Model</span>
+        <strong id="modelName">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Final Cumulative Score</span>
+        <strong id="finalScore">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Steps</span>
+        <strong id="stepCount">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Final Current Place</span>
+        <strong id="finalPlace">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Final Current Action</span>
+        <strong id="finalAction">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Adjusted Final Score</span>
+        <strong id="finalAdjustedScore">-</strong>
+      </div>
+      <div class="metric">
+        <span class="label">Stop Reason</span>
+        <strong id="stopReason">-</strong>
+      </div>
+    </section>
+
+    <section class="content">
+      <section class="map-panel">
+        <div class="panel-header">
+          <h2>Map</h2>
+          <p id="locationLabel">Current location: -</p>
+        </div>
+        <div class="map-grid" id="mapGrid"></div>
+      </section>
+
+      <section class="detail-panel">
+        <div class="panel-header">
+          <h2>Step Details</h2>
+          <p id="stepLabel">Select a step</p>
+        </div>
+        <div class="step-controls">
+          <button id="prevStep" type="button">Previous</button>
+          <input id="stepSlider" type="range" min="0" max="0" value="0">
+          <button id="nextStep" type="button">Next</button>
+        </div>
+        <div class="detail-card">
+          <p><span class="label">Chosen action</span><span id="chosenAction">-</span></p>
+          <p><span class="label">Raw model output</span><span id="rawOutput">-</span></p>
+          <p><span class="label">Reward</span><span id="rewardValue">-</span></p>
+          <p><span class="label">Step score</span><span id="scoreValue">-</span></p>
+          <p><span class="label">Cumulative score</span><span id="cumulativeValue">-</span></p>
+          <p><span class="label">Fallback</span><span id="fallbackValue">-</span></p>
+        </div>
+        <div class="detail-card">
+          <h3>Observation</h3>
+          <pre id="observationText">-</pre>
+        </div>
+      </section>
+    </section>
+
+    <section class="timeline-panel">
+      <div class="panel-header">
+        <h2>Timeline</h2>
+        <p>Click any step to update the map and details.</p>
+      </div>
+      <div id="timeline" class="timeline"></div>
+    </section>
+
+    <section class="timeline-panel">
+      <div class="panel-header">
+        <h2>LLM-as-Judge</h2>
+        <p>Final automatic evaluation attached to the run log.</p>
+      </div>
+      <div id="judgeEmpty" class="judge-empty">No judge evaluation found in this log.</div>
+      <div id="judgePanel" class="judge-panel hidden">
+        <div class="judge-meta">
+          <div class="metric">
+            <span class="label">Judge Model</span>
+            <strong id="judgeModel">-</strong>
+          </div>
+          <div class="metric">
+            <span class="label">Completed Objective</span>
+            <strong id="judgeCompleted">-</strong>
+          </div>
+        </div>
+        <table class="judge-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Score</th>
+              <th>Visualization</th>
+            </tr>
+          </thead>
+          <tbody id="judgeTableBody"></tbody>
+        </table>
+        <div class="judge-judgments">
+          <div class="detail-card">
+            <h3>Action Quality Judgment</h3>
+            <p id="judgeActionText">-</p>
+          </div>
+          <div class="detail-card">
+            <h3>Completion Judgment</h3>
+            <p id="judgeCompletionText">-</p>
+          </div>
+          <div class="detail-card">
+            <h3>Overall Judgment</h3>
+            <p id="judgeOverallText">-</p>
+          </div>
+        </div>
+        <div class="detail-card">
+          <h3>Summary Paragraph</h3>
+          <p id="judgeSummaryText">-</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
